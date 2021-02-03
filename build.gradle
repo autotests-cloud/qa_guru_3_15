@@ -72,10 +72,34 @@ test {
     useJUnitPlatform()
 }
 
-task smoke_tests(type: Test) {
+task smoke(type: Test) {
     useJUnitPlatform {
         includeTags 'smoke'
-        excludeTags 'smoke'
+    }
+    systemProperty 'example_property', 'example_value'
+}
+
+task regress(type: Test) {
+    useJUnitPlatform {
+        includeTags 'regress'
+    }
+    systemProperty 'example_property', 'example_value'
+}
+
+task feature(type: Test) {
+    useJUnitPlatform {
+        includeTags 'feature'
+    }
+    systemProperty 'example_property', 'example_value'
+}
+
+task none(type: Test) {
+    useJUnitPlatform {
+        excludeTags(
+                'feature',
+                'regress',
+                'smoke'
+        )
     }
     systemProperty 'example_property', 'example_value'
 }
