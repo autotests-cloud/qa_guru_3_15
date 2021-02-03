@@ -7,6 +7,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import tests.TestBase;
+import tests.demoqa.pages.PracticePage;
+import tests.demoqa.pages.PracticeResultsPage;
 
 import java.io.File;
 import java.util.Locale;
@@ -46,54 +48,57 @@ public class StudentRegistrationFormTests extends TestBase {
                 state = "Uttar Pradesh",
                 city = "Merrut";
 
+        PracticePage practicePage = new PracticePage();
+        PracticeResultsPage practiceResultsPage = new PracticeResultsPage();
+
         step("Open students registration form", () -> {
-            open("https://demoqa.com/automation-practice-form");
-            $(".practice-form-wrapper").shouldHave(text("Student Registration Form"));
+            open(practicePage.pageUrl);
+            practicePage.formWrapper.shouldHave(text("Student Registration Form"));
         });
 
         step("Fill students registration form", () -> {
-            $("#firstName").val(firstName);
-            $("#lastName").val(lastName);
-            $("#userEmail").val(userEmail);
-            $("#genterWrapper").$(byText(gender)).click();
-            $("#userNumber").val(userNumber);
+            practicePage.firstName.val(firstName);
+            practicePage.lastName.val(lastName);
+            practicePage.userEmail.val(userEmail);
+            practicePage.genterWrapper.$(byText(gender)).click();
+            practicePage.genterNumber.val(userNumber);
             // set date
-            $("#dateOfBirthInput").click();
-            $(".react-datepicker__month-select").selectOption(monthOfBirth);
-            $(".react-datepicker__year-select").selectOption(yearOfBirth);
-            $(".react-datepicker__day--0" + dayOfBirth).click();
+            practicePage.dateOfBirthInput.click();
+            practicePage.datepickerMonth.selectOption(monthOfBirth);
+            practicePage.datepickerYear.selectOption(yearOfBirth);
+            $(practicePage.datepickerDay + dayOfBirth).click();
             // set subject
-            $("#subjectsInput").val(subject1Prefix);
-            $(".subjects-auto-complete__menu-list").$(byText(subject1)).click();
-            $("#subjectsInput").val(subject2Prefix);
-            $(".subjects-auto-complete__menu-list").$(byText(subject2)).click();
+            practicePage.subjectsInput.val(subject1Prefix);
+            practicePage.subjectsMenuList.$(byText(subject1)).click();
+            practicePage.subjectsInput.val(subject2Prefix);
+            practicePage.subjectsMenuList.$(byText(subject2)).click();
             // set hobbies
-            $("#hobbiesWrapper").$(byText(hobby1)).click();
-            $("#hobbiesWrapper").$(byText(hobby2)).click();
-            $("#hobbiesWrapper").$(byText(hobby3)).click();
-            $("#uploadPicture").uploadFile(new File("src/test/resources/" + picture));
-            $("#currentAddress").val(currentAddress);
+            practicePage.hobbiesWrapper.$(byText(hobby1)).click();
+            practicePage.hobbiesWrapper.$(byText(hobby2)).click();
+            practicePage.hobbiesWrapper.$(byText(hobby3)).click();
+            practicePage.hobbiesUploadPicture.uploadFile(new File("src/test/resources/" + picture));
+            practicePage.hobbiesCurrentAddress.val(currentAddress);
             // set state and city
-            $("#state").click();
-            $("#stateCity-wrapper").$(byText(state)).click();
-            $("#city").click();
-            $("#stateCity-wrapper").$(byText(city)).click();
+            practicePage.state.click();
+            practicePage.stateCityWrapper.$(byText(state)).click();
+            practicePage.city.click();
+            practicePage.stateCityWrapper.$(byText(city)).click();
 
-            $("#submit").click();
+            practicePage.submitButton.click();
         });
 
         step("Verify successful form submit", () -> {
-            $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
-            $x("//td[text()='Student Name']").parent().shouldHave(text(firstName + " " + lastName));
-            $x("//td[text()='Student Email']").parent().shouldHave(text(userEmail));
-            $x("//td[text()='Gender']").parent().shouldHave(text(gender));
-            $x("//td[text()='Mobile']").parent().shouldHave(text(userNumber));
-            $x("//td[text()='Date of Birth']").parent().shouldHave(text(dayOfBirth + " " + monthOfBirth + "," + yearOfBirth));
-            $x("//td[text()='Subjects']").parent().shouldHave(text(subject1 + ", " + subject2));
-            $x("//td[text()='Hobbies']").parent().shouldHave(text(hobby1 + ", " + hobby2 + ", " + hobby3));
-            $x("//td[text()='Picture']").parent().shouldHave(text(picture));
-            $x("//td[text()='Address']").parent().shouldHave(text(currentAddress));
-            $x("//td[text()='State and City']").parent().shouldHave(text(state + " " + city));
+            practiceResultsPage.modalTitle.shouldHave(text("Thanks for submitting the form"));
+            practiceResultsPage.studentName.parent().shouldHave(text(firstName + " " + lastName));
+            practiceResultsPage.studentEmail.parent().shouldHave(text(userEmail));
+            practiceResultsPage.gender.parent().shouldHave(text(gender));
+            practiceResultsPage.mobile.parent().shouldHave(text(userNumber));
+            practiceResultsPage.birthDate.parent().shouldHave(text(dayOfBirth + " " + monthOfBirth + "," + yearOfBirth));
+            practiceResultsPage.subjects.parent().shouldHave(text(subject1 + ", " + subject2));
+            practiceResultsPage.hobbies.parent().shouldHave(text(hobby1 + ", " + hobby2 + ", " + hobby3));
+            practiceResultsPage.picture.parent().shouldHave(text(picture));
+            practiceResultsPage.address.parent().shouldHave(text(currentAddress));
+            practiceResultsPage.stateAndCity.parent().shouldHave(text(state + " " + city));
         });
     }
 
